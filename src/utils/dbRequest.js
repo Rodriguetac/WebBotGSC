@@ -13,7 +13,7 @@ async function getSetName () {
   const sets = await getDocs(qSet)
   sets.forEach(set => {
     const setData = set.data()
-    setNames.push([setData.name, setData.name])
+    setNames.push(setData.name)
   })
   return setNames
 }
@@ -30,12 +30,11 @@ async function getDistinctRarity () {
     rarities = rarities.concat(raritySet)
   })
   console.log(rarities.length)
-  rarities = [...new Set(rarities)]
+  const distinctRarities = [...new Set(rarities)]
   // console.log(charNames)
-  const distinctRarities = rarities.map(rarity => {
-    return [rarity, rarity]
-  })
-  console.log(distinctRarities)
+  // const distinctRarities = rarities.map(rarity => {
+  //   return [rarity, rarity]
+  // })
   return distinctRarities
 }
 
@@ -147,12 +146,14 @@ async function manageCollectionUser (userId, card, action) {
           possessedCard.quantity -= 1
           quantity = possessedCard.quantity
         } else {
+          quantity = 0
           collection.splice(collection.indexOf(possessedCard), 1)
         }
       }
     } else {
       if (action === 'add') {
         card.quantity = 1
+        quantity = 1
         collection.push(card)
       }
     }
